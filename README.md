@@ -25,10 +25,10 @@ For AWS instance, the recommended `EBSVolumeSize` is 50 and `InstanceType` is `t
 
 There are two ways of connecting to the AWS machine.
 - Connect to the machine via the Research Gateway portal <br/>
-    1. Select #citations
+    1. Select the machine to be used.
     2. Click on the `SSH/RDP` button.
     3. Insert 'Ubuntu' under `Username` section.
-    4. Click on `Choose a file` button and select your pem file
+    4. Click on `Choose a file` button and select your pem file.
     5. Click on `Submit` button.
 
 - Connect to the machine via ssh on your local laptop <br/>
