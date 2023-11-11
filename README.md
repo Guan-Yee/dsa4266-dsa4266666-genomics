@@ -38,9 +38,9 @@ There are two ways of connecting to the AWS machine.
     4. Open your local terminal/powershell.
     5. Use the follwing command: <br/>
     `ssh -i '/path/to/filename.pem' ubuntu@<InstanceDNSName>`
-        - For MacOS: <br/>
+        - For example, in MacOS: <br/>
         `ssh -i /path/to/filename.pem ubuntu@ec2-13-250-105-39.ap-southeast-1.compute.amazonaws.com`
-        - For Windows: <br/>
+        - For example, in Windows: <br/>
         `ssh -i \path\to\filename.pem ubuntu@ec2-13-250-105-39.ap-southeast-1.compute.amazonaws.com`
 
         (Note: for MacOS users, you may need to run `chmod 400 /path/to/filename.pem` once to resolve the unprotected private key file error.)
