@@ -52,7 +52,7 @@ def generateAggMaxDf(df_copy, agg_columns):
 
 def generateAggStdDf(df_copy, agg_columns):
   grouped_df5 = df_copy.groupby(['transcript_id',
-                                 'transcript_position', 'Nucleotide Sequence'])[agg_columns].std().reset_index()
+                                 'transcript_position', 'Nucleotide Sequence'])[agg_columns].std(ddof=0).reset_index()
 
   grouped_df5 = rename12Cols(grouped_df5, "std")
   return grouped_df5
@@ -64,30 +64,11 @@ def generateAggLastDf(df_copy, agg_columns):
   grouped_df6 = rename12Cols(grouped_df6, "last")
   return grouped_df6
 
-def generateAggSkewnessDf(df_copy, agg_columns):
-  def calculate_skewness(column):
-      return column.skew()
-
-  grouped_df7 = df_copy.groupby(['transcript_id',
-                                 'transcript_position', 'Nucleotide Sequence'])[agg_columns].agg(calculate_skewness).reset_index()
-
-  grouped_df7 = rename12Cols(grouped_df7, "skewness")
-  return grouped_df7
-
-def generateAggKurtosisDf(df_copy, agg_columns):
-  def calculate_kurtosis(column):
-    return column.kurtosis()
-  grouped_df8 = df_copy.groupby(['transcript_id',
-                                 'transcript_position', 'Nucleotide Sequence'])[agg_columns].agg(calculate_kurtosis).reset_index()
-
-  grouped_df8 = rename12Cols(grouped_df8, "kurtosis")
-  return grouped_df8
-
 def generateAggCountDf(df_copy, agg_columns):
-  grouped_df9 = df_copy.groupby(['transcript_id',
+  grouped_df7 = df_copy.groupby(['transcript_id',
                                  'transcript_position', 'Nucleotide Sequence']).size().reset_index(name='Read counts')
 
-  return grouped_df9
+  return grouped_df7
 
 """#### Functions to feature engineer from nucleotide sequence"""
 
@@ -134,7 +115,7 @@ def addDRACHCols(DRACH_motifs, df1):
               temp_list.append(0)
       # Create a new column based on the pattern
       df2['{}_motif'.format(pattern)] = temp_list
-      # print('{} completed!'.format(pattern))
+      print('{} completed!'.format(pattern))
   return df2
 
 # Getter function to create 4 columns of first nucleotide and last nucleotide variation
@@ -182,12 +163,8 @@ def generateAggDf(original_data):
   grouped_df5 = generateAggStdDf(df_copy, agg_columns)
   # Last
   grouped_df6 = generateAggLastDf(df_copy, agg_columns)
-  # Skewness
-  grouped_df7 = generateAggSkewnessDf(df_copy, agg_columns)
-  # Kurtosis
-  grouped_df8 = generateAggKurtosisDf(df_copy, agg_columns)
   # Read count
-  grouped_df9 = generateAggCountDf(df_copy, agg_columns)
+  grouped_df7 = generateAggCountDf(df_copy, agg_columns)
 
   # Merge the dataframes based on the specified criteria
   merged_df = pd.merge(grouped_df1, grouped_df2, on=['transcript_id', 'transcript_position', 'Nucleotide Sequence'])
@@ -196,21 +173,18 @@ def generateAggDf(original_data):
   merged_df = pd.merge(merged_df, grouped_df5, on=['transcript_id', 'transcript_position', 'Nucleotide Sequence'])
   merged_df = pd.merge(merged_df, grouped_df6, on=['transcript_id', 'transcript_position', 'Nucleotide Sequence'])
   merged_df = pd.merge(merged_df, grouped_df7, on=['transcript_id', 'transcript_position', 'Nucleotide Sequence'])
-  merged_df = pd.merge(merged_df, grouped_df8, on=['transcript_id', 'transcript_position', 'Nucleotide Sequence'])
-  merged_df = pd.merge(merged_df, grouped_df9, on=['transcript_id', 'transcript_position', 'Nucleotide Sequence'])
 
-  print("finish aggregation")
+  print("finished aggregation")
 
   # Nucleotide Seq cols
   final_df = createNucleotideSeqCols(merged_df)
-
-  print("finish nucleotide seq")
+  print("finished nucleotide seq")
 
   return final_df
 
 def normalizeColumns(df):
-    # Extract the columns to be normalized (columns 2 to 74)
-    columns_to_normalize = df.columns[2:75]
+    # Extract the columns to be normalized (columns 2 to 13)
+    columns_to_normalize = df.columns[2:14]
 
     # Create a StandardScaler instance
     scaler = StandardScaler()
@@ -220,10 +194,15 @@ def normalizeColumns(df):
 
     return df
 
-def write_to_csv(df, sample_name, df_type):
-  file_name = '_'.join([sample_name, df_type, '.csv'])
+# def write_to_csv(df, sample_name):
+#   file_name = ''.join([sample_name, '.csv'])
 
-  df.to_csv(os.path.join(os.getcwd(), 'final_data', file_name), index=False)
+#   df.to_csv(os.path.join(os.getcwd(), 'final_data', file_name), index=False)
+
+def write_to_parquet(df, sample_name):
+  file_name = '_'.join([sample_name, 'final.parquet'])
+
+  df.to_parquet(os.path.join(os.getcwd(), 'final_data', file_name), index=False)
 
 def run_aggregation():
   """
@@ -236,27 +215,31 @@ def run_aggregation():
       sample_name = '_'.join(f.split('_')[:-1])
       file_names[sample_name] = os.path.join(preprocessed_folder_path, f)
 
-  cols_47 = ['transcript_id', 'transcript_position', '+1 sd signal_read_last', '-1 dwelling time_read_last',
-               '+1 dwelling time_read_last', '-1 mean signal_read_skewness', '-1 mean signal_read_kurtosis',
-               'central mean signal_read_kurtosis', '+1 mean signal_read_skewness', '-1 mean signal_read_std',
-               'central mean signal_read_std', '+1 sd signal_read_min', 'central mean signal_read_skewness',
-               '+1 mean signal_read_kurtosis', 'central dwelling time_read_last', '+1 dwelling time_read_min',
-               '-1 dwelling time_read_min', 'Read counts', 'central sd signal_read_min', '+1 mean signal_read_std',
-               'central dwelling time_read_min', 'AGACA_motif', 'AGACC_motif', 'AGACT_motif', 'AAACA_motif',
-               'AAACC_motif', 'AAACT_motif', 'GGACA_motif', 'GGACC_motif', 'GGACT_motif', 'GAACA_motif',
-               'GAACC_motif', 'GAACT_motif', 'TGACA_motif', 'TGACC_motif', 'TGACT_motif', 'TAACA_motif',
-               'TAACC_motif', 'TAACT_motif', 'First_Nucleotide_A', 'First_Nucleotide_C', 'First_Nucleotide_G',
-               'First_Nucleotide_T', 'Last_Nucleotide_A', 'Last_Nucleotide_C', 'Last_Nucleotide_G', 'Last_Nucleotide_T']
+  cols_41 = ['transcript_id', 'transcript_position',
+              'central mean signal_read_std', 'central dwelling time_read_last',
+              '+1 sd signal_read_min', '-1 dwelling time_read_min',
+              '-1 mean signal_read_std', '+1 dwelling time_read_last',
+              'central sd signal_read_min', 'central dwelling time_read_min',
+              '+1 sd signal_read_last', '+1 mean signal_read_std',
+              '+1 dwelling time_read_min', '-1 dwelling time_read_last',
+              'Read counts', 'AGACA_motif', 'AGACC_motif', 'AGACT_motif',
+              'AAACA_motif', 'AAACC_motif', 'AAACT_motif', 'GGACA_motif',
+              'GGACC_motif', 'GGACT_motif', 'GAACA_motif', 'GAACC_motif',
+              'GAACT_motif', 'TGACA_motif', 'TGACC_motif', 'TGACT_motif',
+              'TAACA_motif', 'TAACC_motif', 'TAACT_motif', 'First_Nucleotide_A',
+              'First_Nucleotide_C', 'First_Nucleotide_G', 'First_Nucleotide_T',
+              'Last_Nucleotide_A', 'Last_Nucleotide_C', 'Last_Nucleotide_G',
+              'Last_Nucleotide_T']
 
   # run functions for feature engineering and write to csv
   for sample_name, path in file_names.items():
     print(sample_name)
     original_df = pd.read_parquet(path)
     agg_df = generateAggDf(original_df)
-    final_agg_df = normalizeColumns(agg_df) # should have 101 columns (excludes gene_id, label)
-    final_47_df = final_agg_df[cols_47] # should have 47 columns (excludes gene_id, label)
-    # write_to_csv(final_agg_df, sample_name, 'final_full')
-    write_to_csv(final_47_df, sample_name, 'final_47')
+    # final_agg_df = normalizeColumns(agg_df) # should have 101 columns (excludes gene_id, label)
+    final_df = agg_df[cols_41] # should have 41 columns (excludes gene_id, label)
+    final_normalize_df = normalizeColumns(final_df) # note: switched to select the cols first then normalize
+    write_to_parquet(final_normalize_df, sample_name)
 
 if __name__ == "__main__":
     run_aggregation()
