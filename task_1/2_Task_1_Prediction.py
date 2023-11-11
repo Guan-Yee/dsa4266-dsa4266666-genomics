@@ -365,7 +365,7 @@ def initialiseLGBM(model_path):
     print("LightGBM Model initialised!")
     return lgbm_model
 
-def predictCellLine(model, df):
+def predictCellLine(model, df, filename):
     X = preprocess_data(df)
     y_pred = model.predict_proba(X)[:, 1] # Probability score
     df1 = df.copy()
@@ -377,7 +377,7 @@ def predictCellLine(model, df):
     print("Dataset Prediction Completed!")
     
     # Specify the export directory
-    destination_directory = os.path.join(os.getcwd(), "Predicted_m6A_site.csv")
+    destination_directory = os.path.join(os.getcwd(), filename)
     
     # Export to the respective directory
     df2.to_csv(destination_directory, index = False)
@@ -390,16 +390,31 @@ def predictCellLine(model, df):
 ################################################################################
 ######################### Prediction Master Function ###########################
 
-def generatePrediction(test_data_json_path, model_path):
+def generatePrediction(test_data_json_path, model_path, filename):
     df = preprocessTestDataset(test_data_json_path)
     df1 = generateAggDf(df)
     df2 = normalizeColumns(df1)
     df3 = shortlistUsefulFeatures(df2)
     model = initialiseLGBM(model_path)
-    predictCellLine(model, df3)
+    predictCellLine(model, df3, filename)
 
-    
-test_data_json_path = os.path.join(os.getcwd(), "studies/ProjectStorage/task_1/dataset3.json.gz") # Change to aws project storage and test dataset
-model_path = os.path.join(os.getcwd(), "studies/ProjectStorage/task_1/LGBM_tuned.pkl") # Change to aws project storage
-generatePrediction(test_data_json_path, model_path)
+test_data_json_path = os.path.join(os.getcwd(), "dataset0.json.gz") # Change to aws project storage and test dataset
+model_path = os.path.join(os.getcwd(), "LGBM_tuned.pkl") # Change to aws project storage
+filename = "dataset0_predicted_m6A_site.csv"
+generatePrediction(test_data_json_path, model_path, filename)
+
+test_data_json_path = os.path.join(os.getcwd(), "dataset1.json.gz") # Change to aws project storage and test dataset
+model_path = os.path.join(os.getcwd(), "LGBM_tuned.pkl") # Change to aws project storage
+filename = "dataset1_predicted_m6A_site.csv"
+generatePrediction(test_data_json_path, model_path, filename)
+
+test_data_json_path = os.path.join(os.getcwd(), "dataset2.json.gz") # Change to aws project storage and test dataset
+model_path = os.path.join(os.getcwd(), "LGBM_tuned.pkl") # Change to aws project storage
+filename = "dataset2_predicted_m6A_site.csv"
+generatePrediction(test_data_json_path, model_path, filename)
+
+test_data_json_path = os.path.join(os.getcwd(), "dataset3.json.gz") # Change to aws project storage and test dataset
+model_path = os.path.join(os.getcwd(), "LGBM_tuned.pkl") # Change to aws project storage
+filename = "dataset3_predicted_m6A_site.csv"
+generatePrediction(test_data_json_path, model_path, filename)
 

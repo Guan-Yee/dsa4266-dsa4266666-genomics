@@ -10,7 +10,7 @@ def write_to_csv(df, sample_name):
 
 def run_predict():
     # load saved model
-    with open('LGBM_tuned.pkl' , 'rb') as f:
+    with open('../task_1/LGBM_tuned.pkl' , 'rb') as f:
         model = pickle.load(f)
     
     final_data_path = os.path.join(os.getcwd(), 'final_data')
