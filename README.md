@@ -25,10 +25,10 @@ For AWS instance, the recommended `EBSVolumeSize` is 50 and `InstanceType` is `t
 
 There are two ways of connecting to the AWS machine.
 - Connect to the machine via the Research Gateway portal <br/>
-    1. Select #citations
+    1. Select the machine to be used.
     2. Click on the `SSH/RDP` button.
     3. Insert 'Ubuntu' under `Username` section.
-    4. Click on `Choose a file` button and select your pem file
+    4. Click on `Choose a file` button and select your pem file.
     5. Click on `Submit` button.
 
 - Connect to the machine via ssh on your local laptop <br/>
@@ -38,9 +38,9 @@ There are two ways of connecting to the AWS machine.
     4. Open your local terminal/powershell.
     5. Use the follwing command: <br/>
     `ssh -i '/path/to/filename.pem' ubuntu@<InstanceDNSName>`
-        - For MacOS: <br/>
+        - For example, in MacOS: <br/>
         `ssh -i /path/to/filename.pem ubuntu@ec2-13-250-105-39.ap-southeast-1.compute.amazonaws.com`
-        - For Windows: <br/>
+        - For example, in Windows: <br/>
         `ssh -i \path\to\filename.pem ubuntu@ec2-13-250-105-39.ap-southeast-1.compute.amazonaws.com`
 
         (Note: for MacOS users, you may need to run `chmod 400 /path/to/filename.pem` once to resolve the unprotected private key file error.)
