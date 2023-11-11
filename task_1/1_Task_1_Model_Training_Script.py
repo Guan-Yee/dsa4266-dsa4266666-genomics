@@ -427,14 +427,13 @@ def generateTrainedLGBM(data_json_path, data_info_path):
     df3 = shortlistUsefulFeatures(df2)
     X, y = preprocessTrainData(df3)
     model = trainLightGBM(X, y)
-    filename = "LGBM_tuned.pkl"
     # Specify the file path in the current directory
-    filename = os.path.join(os.getcwd(), "studies/ProjectStorage/task_1/LGBM_tuned.pkl") # Change to aws project storage
+    filename = os.path.join(os.getcwd(), "LGBM_tuned.pkl") # Change to aws project storage
     # Export the model to the current directory
     with open(filename, 'wb') as file:
         pickle.dump(model, file)
         
-data_json_path = os.path.join(os.getcwd(), "studies/ProjectStorage/task_1/dataset0.json.gz") # Change to aws project storage
-data_info_path = os.path.join(os.getcwd(), "studies/ProjectStorage/task_1/data.info") # Change to aws project storage
+data_json_path = os.path.join(os.getcwd(), "dataset0.json.gz") # Change to aws project storage
+data_info_path = os.path.join(os.getcwd(), "data.info") # Change to aws project storage
 generateTrainedLGBM(data_json_path, data_info_path)
 
