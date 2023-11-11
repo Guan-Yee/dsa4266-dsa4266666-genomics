@@ -21,6 +21,8 @@ This repository is a project done by **dsa4266666** team for the module DSA4266 
 
 ## Usage
 ### Connect AWS Machine
+For AWS instance, the recommended `EBSVolumeSize` is 50 and `InstanceType` is `t3.2xlarge`.
+
 There are two ways of connecting to the AWS machine.
 - Connect to the machine via the Research Gateway portal <br/>
     1. Select #citations
@@ -71,7 +73,7 @@ cd task_1
 ```
 If you are not at `dsa4266-dsa4266666-genomics` directory, use:
 ```
-cd ~/dsa4266-dsa4266666-genomics/task_2
+cd ~/dsa4266-dsa4266666-genomics/task_1
 ```
 Then, download the datasets using the following code:
 ```
@@ -167,16 +169,16 @@ aws s3 sync --no-sign-request s3://sg-nex-data/data/processed_data/m6Anet/ data
 ```
 After downloading the datasets successfully, there will have 12 folders in `data` repository:
 - `SGNex_A549_directRNA_replicate5_run1`
-- `SGNex_Hct116_directRNA_replicate4_run3`
-- `SGNex_K562_directRNA_replicate5_run1`
 - `SGNex_A549_directRNA_replicate6_run1`
-- `SGNex_HepG2_directRNA_replicate5_run2`
-- `SGNex_K562_directRNA_replicate6_run1`
 - `SGNex_Hct116_directRNA_replicate3_run1`
-- `SGNex_HepG2_directRNA_replicate6_run1`
-- `SGNex_MCF7_directRNA_replicate3_run1`
 - `SGNex_Hct116_directRNA_replicate3_run4`
+- `SGNex_Hct116_directRNA_replicate4_run3`
+- `SGNex_HepG2_directRNA_replicate5_run2`
+- `SGNex_HepG2_directRNA_replicate6_run1`
 - `SGNex_K562_directRNA_replicate4_run1`
+- `SGNex_K562_directRNA_replicate5_run1`
+- `SGNex_K562_directRNA_replicate6_run1`
+- `SGNex_MCF7_directRNA_replicate3_run1`
 - `SGNex_MCF7_directRNA_replicate4_run1`
 
 You may list out the folders in `data` repository using `ls`.
@@ -203,7 +205,7 @@ After preprocessing, `preprocessed_data` will contain 12 Parquet files:
 - `SGNex_MCF7_directRNA_replicate3_run1_intermediate.parquet`
 - `SGNex_MCF7_directRNA_replicate4_run1_intermediate.parquet`
 
-You may list out the folders in `preprocessed_data` repository using `ls`.
+You may list out the files in `preprocessed_data` repository using `ls`.
 ```
 ls preprocessed_data
 ```
@@ -231,7 +233,7 @@ At the end, 12 final datasets will be generated in `final_data` repository:
 - `SGNex_MCF7_directRNA_replicate3_run1_final.parquet`
 - `SGNex_MCF7_directRNA_replicate4_run1_final.parquet`
 
-You may list out the folders in `final_data` repository using `ls`.
+You may list out the files in `final_data` repository using `ls`.
 ```
 ls final_data
 ```
@@ -256,6 +258,11 @@ At the end, 12 CSV files containing the predictions will be generated:
 - `SGNex_K562_directRNA_replicate6_run1_predict_lgbm.csv`
 - `SGNex_MCF7_directRNA_replicate3_run1_predict_lgbm.csv`
 - `SGNex_MCF7_directRNA_replicate4_run1_predict_lgbm.csv`
+
+You may list out the files in `lgbm_prediction` repository using `ls`.
+```
+ls lgbm_prediction
+```
 
 You may check the first few lines of the CSV file using `head`.
 
