@@ -16,13 +16,12 @@ import pickle
 from sklearn.preprocessing import StandardScaler
 
 # Content Page
-# Line 27 - Preliminary Feature Preprocessing
-# Line 124 - Aggregation Feature Engineering
-# Line 202 - Binary Columns Feature Engineering
-# Line 279 - Feature Engineering Master function
-# Line 363 - Feature Engineered Dataset Preprocessing
-# Line 414 - Training LGBM model
-# Line 433 - Task 1 Model Training Script
+# Line 26 - Preliminary Feature Preprocessing
+# Line 123 - Aggregation Feature Engineering
+# Line 201 - Binary Columns Feature Engineering
+# Line 278 - Feature Engineering Master function
+# Line 362 - Feature Engineered Dataset Preprocessing
+# Line 413 - Training LGBM model
 
 ################################################################################
 ################################################################################
@@ -417,7 +416,7 @@ def trainLightGBM(X, y):
 ################################################################################
 ################################################################################
 ################################################################################
-############################# Training Model ###################################
+########################## Training LGBM model #################################
 
 def generateTrainedLGBM(data_json_path, data_info_path):
     df= preprocess_dataset(data_json_path, data_info_path)
