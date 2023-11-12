@@ -10,6 +10,7 @@ This repository is a project done by **dsa4266666** team for the module DSA4266 
   - [Download Datasets](#Download-Datasets)
   - [Training Model (Optional)](#Training-Model-(Optional))
   - [Generate Predictions](#Generate-Predictions)
+  - [Demonstration](#Demonstration)
 - [Task 2](#Task-2)
   - [Download Datasets from AWS](#Download-Datasets-from-AWS)
   - [Preprocess Datasets](#Preprocess-Datasets)
@@ -141,6 +142,9 @@ ENST00000000233,261,0.20029018278348798
 ENST00000000233,316,0.04074177045204055
 ENST00000000233,332,0.117464322262655
 ```
+
+### Demonstration
+A demonstration video on how to predict m6A with Task 1 datasets is available [here](https://youtu.be/MVJUTT-0cQI).
 
 ## Task 2
 Predict m6A RNA modifications in all samples from the SG-NEx data using your method. Describe the results and compare them across the different cell lines. Summarise and visualise your observations.
